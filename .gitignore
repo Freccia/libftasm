@@ -1,5 +1,9 @@
 # Prerequisites
 *.d
+*.dSYM
+.*.sw*
+.*sw*
+.sw*
 
 # Object files
 *.o
