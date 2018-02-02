@@ -6,7 +6,7 @@
 ;    By: lfabbro <lfabbro@student.42.fr>            +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2018/02/02 16:08:04 by lfabbro           #+#    #+#              ;
-;    Updated: 2018/02/02 23:09:08 by lfabbro          ###   ########.fr        ;
+;    Updated: 2018/02/02 23:12:00 by lfabbro          ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -19,12 +19,11 @@
 global		_ft_cat
 
 section		.data
-buf:
-	.ptr	resb BUFSIZE
+buf:		resb BUFSIZE
 
 section		.text
 _ft_cat:
-	lea		rsi, [rel buf.ptr]	; loading buffer address
+	lea		rsi, [rel buf]	; loading buffer address
 
 .loop:
 	push	rdi				; rdi == fd
