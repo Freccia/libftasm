@@ -4,11 +4,13 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <ctype.h>
 
 #include "libfts.h"
 
 static int		test_bzero(int n);
+static int		test_strcat(char *dst, char *src, int n);
 static int		test_isalpha();
 static int		test_isdigit();
 static int		test_isalnum();
@@ -17,7 +19,11 @@ static int		test_isprint();
 static int		test_toupper();
 static int		test_tolower();
 static int		test_puts(char *str);
-static int		test_strcat(char *dst, char *src, int n);
+static int		test_strlen(char *str);
+static int		test_memset(int c, int n);
+static int		test_memcpy(char *s, size_t n);
+static int		test_strdup(char *s);
+static int		test_cat(void);
 
 int		main(int ac, char **av)
 {
@@ -82,10 +88,46 @@ int		main(int ac, char **av)
 	test_tolower();
 
 /*
+ *		ft_strlen
+ */
+	printf("\nTest ft_strlen: \n");
+	test_strlen("Hello! We are testing ft_strlen!");
+	test_strlen("Hello! lol\t lol lol\n");
+
+/*
  *		ft_puts
  */
 	printf("\nTest ft_puts: \n");
 	test_puts("Hello! We are testing ft_puts!");
+	test_puts("");
+
+/*
+ *		ft_memset
+ */
+	printf("\nTest ft_memset: \n");
+	test_memset('a', 10);
+	test_memset(16, 50);
+
+/*
+ *		ft_memcpy
+ */
+	printf("\nTest ft_memcpy: \n");
+	test_memcpy("Hello World!\n", 13);
+	test_memcpy("Falalalalalalalalalalalalalalalalalalalalalalalal", 4*12+1);
+
+/*
+ *		ft_strdup
+ */
+	printf("\nTest ft_strcpy: \n");
+	test_strdup("Hello World!\n");
+	test_strdup("Falalalalalalalalalalalalalalalalalalalalalalalal");
+	ft_strdup(NULL);
+
+/*
+ *		ft_cat
+ */
+	printf("Test ft_cat:\n");
+	test_cat();
 
 	free(ptr);
 	return (0);
@@ -106,6 +148,7 @@ static int		test_bzero(int n)
 		++i;
 	}
 	free(ptr);
+	printf("OK\n");
 	return (0);
 }
 
@@ -127,6 +170,7 @@ static int		test_strcat(char *dst, char *src, int n)
 	printf("%s", ptr);
 	free(ptr);
 	free(tmp);
+	printf("OK\n");
 	return (0);
 }
 
@@ -143,6 +187,7 @@ static int		test_isdigit()
 			return (printf("ERROR: %d is digit!\n", i));
 		++i;
 	}
+	printf("OK\n");
 	return (0);
 }
 
@@ -159,6 +204,7 @@ static int		test_isalpha()
 			return (printf("ERROR: %d is alpha!\n", i));
 		++i;
 	}
+	printf("OK\n");
 	return (0);
 }
 
@@ -175,6 +221,7 @@ static int		test_isalnum()
 			return (printf("ERROR: %d is alnum!\n", i));
 		++i;
 	}
+	printf("OK\n");
 	return (0);
 }
 
@@ -191,6 +238,7 @@ static int		test_isascii()
 			return (printf("ERROR: %d is ascii!\n", i));
 		++i;
 	}
+	printf("OK\n");
 	return (0);
 }
 
@@ -207,6 +255,7 @@ static int		test_isprint()
 			return (printf("ERROR: %d is print!\n", i));
 		++i;
 	}
+	printf("OK\n");
 	return (0);
 }
 
@@ -225,6 +274,7 @@ static int		test_toupper()
 			return (printf("ERROR: %c != %c tolower does not work!\n", j, k));
 		++i;
 	}
+	printf("OK\n");
 	return (0);
 }
 
@@ -243,11 +293,123 @@ static int		test_tolower()
 			return (printf("ERROR: %c != %c tolower does not work!\n", j, k));
 		++i;
 	}
+	printf("OK\n");
+	return (0);
+}
+
+static int		test_strlen(char *str)
+{
+	char	j;
+	char	k;
+
+	k = ft_strlen(str);
+	j = strlen(str);
+	if (k != j)
+		return (printf("ERROR: %d != %d strlen does not work!\n", j, k));
+	printf("OK\n");
 	return (0);
 }
 
 static int		test_puts(char *str)
 {
-	ft_puts(str);
+	int		j;
+	int		k;
+
+	j = ft_puts(str);
+	k = puts(str);
+	if ((j > 0 && k <= 0) || (j <= 0 && k > 0))
+		return (printf("ERROR: %d != %d puts does not work!\n", j, k));
+	printf("OK  - len: %d\n", j);
+	return (0);
+}
+
+static int			test_memset(int c, int n)
+{
+	char	*ptr;
+	char	*tmp;
+	int		i = 0;
+
+	ptr = malloc(n);
+	tmp = malloc(n);
+	ptr = ft_memset(ptr, c, n);
+	tmp = memset(tmp, c, n);
+	while (i < n)
+	{
+		/*
+		printf("ptr[%d]: %d\n", i, ptr[i]);
+		*/
+		if (ptr[i] != tmp[i])
+			return (printf("ERROR: ptr[%d]: %d != %d\n", i, ptr[i], tmp[i]));
+		++i;
+	}
+	printf("OK\n");
+	free(ptr);
+	free(tmp);
+	return (0);
+}
+
+static int			test_memcpy(char *s, size_t n)
+{
+	char	*ptr;
+	char	*tmp;
+	size_t	i = 0;
+
+	ptr = malloc(n);
+	tmp = malloc(n);
+	ptr = ft_memcpy(ptr, s, n);
+	tmp = memcpy(tmp, s, n);
+	while (i < n)
+	{
+		/*
+		printf("ptr[%ld]: %d\n", i, ptr[i]);
+		*/
+		if (ptr[i] != tmp[i])
+			return (printf("ERROR: ptr[%ld]: %d != %d (%s)\n", i, ptr[i], tmp[i], s));
+		++i;
+	}
+	printf("OK\n");
+	free(ptr);
+	free(tmp);
+	return (0);
+}
+
+static int			test_strdup(char *s)
+{
+	char	*ptr;
+	char	*tmp;
+	size_t	i = 0;
+	size_t	len = strlen(s);
+
+	tmp = strdup(s);
+	ptr = ft_strdup(s);
+	while (i < len)
+	{
+		/*
+		printf("ptr[%ld]: %d\n", i, ptr[i]);
+		*/
+		if (ptr[i] != tmp[i])
+			return (printf("ERROR: ptr[%ld]: %d != %d (%s)\n", i, ptr[i], tmp[i], s));
+		++i;
+	}
+	//printf("%s -- %s\n", ptr, tmp);
+	printf("OK\n");
+	free(ptr);
+	free(tmp);
+	return (0);
+}
+
+static int			test_cat(char *path)
+{
+	int		fd;
+	int		ret;
+	
+	if (path && path[0] == '-')
+		fd = 0;
+	else if ((fd = open(path, O_RDONLY)) < 0)
+			return (printf("Failed to open fd.\n"));
+	if ((ret = ft_cat(fd)) != 0)
+		return (printf("ERROR: wrong return value: %d\n", ret));
+	if (fd != 0)
+		close(fd);
 	return (0);
 }

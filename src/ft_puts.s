@@ -6,7 +6,7 @@
 ;    By: lfabbro <lfabbro@student.42.fr>            +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2018/02/01 16:32:29 by lfabbro           #+#    #+#              ;
-;    Updated: 2018/02/01 18:38:20 by lfabbro          ###   ########.fr        ;
+;    Updated: 2018/02/02 11:40:28 by lfabbro          ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -14,6 +14,7 @@
 %define STDOUT				1
 %define WRITE				4
 
+extern		_ft_strlen
 global		_ft_puts
 
 section		.data
@@ -25,17 +26,15 @@ _ft_puts:
 	xor		rdx, rdx
 	mov		rsi, rdi
 
-.slen:
-	cmp		byte [rsi + rdx], 0
-	je		.write
-	inc		rdx
-	jmp		.slen
+.ft_strlen:
+	call	_ft_strlen
+	mov		rdx, rax
 
 .write:
 	mov		rdi, STDOUT
 	mov		rax, MACH_SYSCALL(WRITE)
 	syscall
-	pop		rax
+	push	rax
 
 .write_nl:
 	lea		rsi, [rel newline]
@@ -47,5 +46,4 @@ _ft_puts:
 .end:
 	pop		rax
 	inc		rax
-	leave
 	ret

@@ -24,7 +24,12 @@ SRC_NAME	= ft_bzero.s \
 			  ft_isprint.s \
 			  ft_toupper.s \
 			  ft_tolower.s \
-			  ft_puts.s
+			  ft_puts.s \
+			  ft_strlen.s \
+			  ft_memset.s \
+			  ft_memcpy.s \
+			  ft_strdup.s \
+			  ft_cat.s
 
 TEST		= test_libfts
 TEST_SRC	= main.c
@@ -37,7 +42,7 @@ LIB_DIR		= .
 AS			=  /usr/local/bin/nasm
 ASFLAGS		+= -f macho64
 CC			= clang
-CFLAGS		= -Wall -Wextra -Werror
+CFLAGS		= -Wall -Wextra -Werror -g
 LD			=  ld
 LDFLAGS		+= -macosx_version_min 10.8 -lSystem
 
@@ -56,7 +61,7 @@ ENDC		= \033[0m
 
 .PHONY:	all clean fclean re $(TEST)
 
-all: $(NAME)
+all: $(NAME) test
 
 $(NAME): $(OBJ_ASM) 
 	ar rc $(NAME) $^
