@@ -59,7 +59,7 @@ YELLOW		= \033[0;33m
 WHITE		= \033[1;37m
 ENDC		= \033[0m
 
-.PHONY:	all clean fclean re $(TEST)
+.PHONY:	all clean fclean re test_libfts
 
 all: $(NAME) test
 

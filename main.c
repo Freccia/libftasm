@@ -23,7 +23,7 @@ static int		test_strlen(char *str);
 static int		test_memset(int c, int n);
 static int		test_memcpy(char *s, size_t n);
 static int		test_strdup(char *s);
-static int		test_cat(void);
+static int		test_cat(char *path);
 
 int		main(int ac, char **av)
 {
@@ -126,8 +126,9 @@ int		main(int ac, char **av)
 /*
  *		ft_cat
  */
-	printf("Test ft_cat:\n");
-	test_cat();
+	printf("\nTest ft_cat:\n");
+	test_cat("./test_l");
+	test_cat("-");
 
 	free(ptr);
 	return (0);
@@ -401,15 +402,14 @@ static int			test_strdup(char *s)
 static int			test_cat(char *path)
 {
 	int		fd;
-	int		ret;
 	
 	if (path && path[0] == '-')
 		fd = 0;
 	else if ((fd = open(path, O_RDONLY)) < 0)
 			return (printf("Failed to open fd.\n"));
-	if ((ret = ft_cat(fd)) != 0)
-		return (printf("ERROR: wrong return value: %d\n", ret));
-	if (fd != 0)
+	write(1, "Enter the void\n", 15);
+	ft_cat(fd);
+	if (fd > 2)
 		close(fd);
 	return (0);
 }
