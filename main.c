@@ -127,7 +127,10 @@ int		main(int ac, char **av)
  *		ft_cat
  */
 	printf("\nTest ft_cat:\n");
-	test_cat("./test_l");
+	if (ac > 1)
+		test_cat(av[1]);
+	else if (ac > 2)
+		test_cat(av[2]);
 	test_cat("-");
 
 	free(ptr);
