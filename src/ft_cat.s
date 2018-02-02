@@ -6,7 +6,7 @@
 ;    By: lfabbro <lfabbro@student.42.fr>            +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2018/02/02 16:08:04 by lfabbro           #+#    #+#              ;
-;    Updated: 2018/02/02 22:40:23 by lfabbro          ###   ########.fr        ;
+;    Updated: 2018/02/02 22:54:28 by lfabbro          ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -21,41 +21,27 @@ global		_ft_cat
 
 section		.data
 buf:
-	.ptr	db  "           "
-	.size	equ 512
+	.ptr	dd  "                                                            "
+	.len	equ $ - buf.ptr
 
 section		.text
 _ft_cat:
-	cmp		rdi, 0			; fd == 0
-	je		.stdin			;
-
-.file:
-	mov		rdx, buf.size	; read arg buf.size
-	jmp		.init			;
-
-.stdin:
-	mov		rdx, 1			; buf.size = 1
-
-.init:
-	lea		rsi, [rel buf.ptr]	;
-	push	rdx				;
+	mov		rdx, buf.len	; reading buf.len bytes
+	lea		rsi, [rel buf.ptr]	; storing into buffer
+	push	rdx				; saving len from being destroyed by read and write
 
 .loop:
-	push	rdi				;
+	push	rdi				; rdi == fd
 	mov		rax, MACH_SYSCALL(READ)	;
 	syscall					;
 	cmp		rax, 0			; rax <= 0
 	jng		.end			; 	return
-	pop		rdi				;
-	pop		rdx				;
-	push	rdx				;
-	push	rdi				;
 	mov		rdi, 1			;
-	mov		rdx, rax		;
+	mov		rdx, rax		; write rax (read) bytes
 	mov		rax, MACH_SYSCALL(WRITE) ;
 	syscall					;
-	pop		rdi				;
-	pop		rdx				;
+	pop		rdi				; rdi = fd
+	pop		rdx				; rdx = buf.len
 	push	rdx				;
 	jmp		.loop			;
 
