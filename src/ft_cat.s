@@ -6,7 +6,7 @@
 ;    By: lfabbro <lfabbro@student.42.fr>            +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2018/02/02 16:08:04 by lfabbro           #+#    #+#              ;
-;    Updated: 2018/02/02 23:12:00 by lfabbro          ###   ########.fr        ;
+;    Updated: 2018/02/03 01:08:03 by lfabbro          ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -18,28 +18,44 @@
 
 global		_ft_cat
 
-section		.data
+section		.bss
 buf:		resb BUFSIZE
 
 section		.text
 _ft_cat:
+	push	rbp				;
+	mov		rbp, rsp		;
 	lea		rsi, [rel buf]	; loading buffer address
 
 .loop:
 	push	rdi				; rdi == fd
 	mov		rdx, BUFSIZE	; reading BUFSIZE bytes
+
 	mov		rax, MACH_SYSCALL(READ)	;
 	syscall					;
-	cmp		rax, 0			; (rax <= 0)
-	jng		.end			; 	return
+	jc		.err			;
+
+	push	rax				;
 	mov		rdi, STDOUT		; write on stdout
 	mov		rdx, rax		; write rax (read) bytes
+
 	mov		rax, MACH_SYSCALL(WRITE) ;
 	syscall					;
+	jc		.err1			;
+
+	pop		rax				;
 	pop		rdi				; rdi = fd
-	jmp		.loop			;
+	cmp		rax, 0			;
+	jg		.loop			;
 
 .end:
-	leave
-	ret
+	mov		rsp, rbp		;
+	pop		rbp				;
+	ret						;
+
+.err1:
+	pop		rax				;
+.err:
+	mov		rax, -1			;
+	jmp		.end			;
 
