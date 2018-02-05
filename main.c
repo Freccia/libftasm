@@ -196,7 +196,65 @@ int		main(int ac, char **av)
 	printf("%u ^ %u = %u %d\n", 2, -10, ft_upow(2, -10), ft_upow(2, -10));
 	*/
 
+/*
+ *		ft_isnbr
+ */
+	printf("\nTest ft_nbr:\n");
+	char	*str = malloc(50);
+	ft_bzero(str, 50);
+	strcpy(str, "-2");
+	printf("'%s' is nbr: %d\n", str, ft_isnbr(str));
+	strcpy(str, "-0");
+	printf("'%s' is nbr: %d\n", str, ft_isnbr(str));
+	strcpy(str, "+300");
+	printf("'%s' is nbr: %d\n", str, ft_isnbr(str));
+	strcpy(str, "		  +8976453");
+	printf("'%s' is nbr: %d\n", str, ft_isnbr(str));
+	strcpy(str, "    +5");
+	printf("'%s' is nbr: %d\n", str, ft_isnbr(str));
+	strcpy(str, "   () -02");
+	printf("'%s' is nbr: %d\n", str, ft_isnbr(str));
+	strcpy(str, "ops-3");
+	printf("'%s' is nbr: %d\n", str, ft_isnbr(str));
+	strcpy(str, "! +5");
+	printf("'%s' is nbr: %d\n", str, ft_isnbr(str));
+	strcpy(str, "abc 90");
+	printf("'%s' is nbr: %d\n", str, ft_isnbr(str));
+	strcpy(str, "90 abc");
+	printf("'%s' is nbr: %d\n", str, ft_isnbr(str));
+	strcpy(str, "   -abc90");
+	printf("'%s' is nbr: %d\n", str, ft_isnbr(str));
+	
+/*
+ *		ft_swap
+ */
+	printf("\nTest ft_swap:\n");
+	int		a = 0;
+	int		b = 3;
+	printf("a = %d	b = %d\n", a, b);
+	ft_swap(&a, &b);
+	printf("a = %d	b = %d\n", a, b);
 
+/*
+ *		ft_atoi
+ */
+	printf("\nTest ft_atoi:\n");
+	strcpy(str, "   0010");
+	printf("'%s': %d\n", str, ft_atoi(str));
+	strcpy(str, "   -9099");
+	printf("'%s': %d\n", str, ft_atoi(str));
+	strcpy(str, "   +2000");
+	printf("'%s': %d\n", str, ft_atoi(str));
+	strcpy(str, "2147483647");
+	printf("'%s': %d\n", str, ft_atoi(str));
+	strcpy(str, "2147483648");
+	printf("'%s': %d\n", str, ft_atoi(str));
+	strcpy(str, "abc 1010");
+	printf("'%s': %d\n", str, ft_atoi(str));
+	strcpy(str, "   2000");
+	printf("'%s': %d\n", str, ft_atoi(str));
+	strcpy(str, "   90");
+	printf("'%s': %d\n", str, ft_atoi(str));
 	
 /*
  *		ft_cat
@@ -210,6 +268,7 @@ int		main(int ac, char **av)
 
 	free(ptr);
 	free(ptr2);
+	free(str);
 	return (0);
 }
 

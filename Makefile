@@ -31,6 +31,9 @@ SRC_NAME	= ft_bzero.s \
 			  ft_strdup.s \
 			  ft_memmove.s \
 			  ft_pow.s \
+			  ft_isnbr.s \
+			  ft_swap.s \
+			  ft_atoi.s \
 			  ft_cat.s
 
 TEST		= test_libfts
