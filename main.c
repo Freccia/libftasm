@@ -6,6 +6,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <math.h>
 
 #include "libfts.h"
 
@@ -22,16 +23,21 @@ static int		test_puts(char *str);
 static int		test_strlen(char *str);
 static int		test_memset(int c, int n);
 static int		test_memcpy(char *s, size_t n);
+static int		test_memmove(char *d, char *s, size_t n);
 static int		test_strdup(char *s);
 static int		test_cat(char *path);
+
+void			power(double a, double b, double *res);
 
 int		main(int ac, char **av)
 {
 	char	*ptr;
+	char	*ptr2;
 
 	(void)ac;
 	(void)av;
 	ptr = NULL;
+	ptr2 = NULL;
 /*
  *		ft_bzero
  */
@@ -116,6 +122,23 @@ int		main(int ac, char **av)
 	test_memcpy("Falalalalalalalalalalalalalalalalalalalalalalalal", 4*12+1);
 
 /*
+ *		ft_memmove
+ */
+	printf("\nTest ft_memmove: \n");
+	int i = 0;
+	/* ptr has enough space to overflow by 5 bytes */
+	ptr = malloc(20);
+	ptr2 = malloc(15);
+	while (i < 15)
+	{
+		ptr2[i] = (char)(i + 10);
+		++i;
+	}
+	test_memmove(ptr, ptr2, 15);
+	/* overflow */
+	test_memmove(ptr, ptr + 5, 15);
+
+/*
  *		ft_strdup
  */
 	printf("\nTest ft_strcpy: \n");
@@ -123,6 +146,58 @@ int		main(int ac, char **av)
 	test_strdup("Falalalalalalalalalalalalalalalalalalalalalalalal");
 	ft_strdup(NULL);
 
+/*
+ *		ft_ipow
+ */
+	printf("\nTest ft_ipow (int): \n");
+	int	n = 2;
+	int	pow = 3;
+	int	res;
+	res = ft_ipow(n, pow);
+	printf("%d ^ %d = %d\n", n, pow, res);
+	printf("%d ^ %d = %d\n", 2, 0, ft_ipow(2, 0));
+	printf("%d ^ %d = %d\n", 10, 4, ft_ipow(10, 4));
+	printf("%d ^ %d = %d\n", 4, 4, ft_ipow(4, 4));
+	printf("%d ^ %d = %d\n", 4, 3, ft_ipow(4, 3));
+	printf("%d ^ %d = %d\n", 4, 5, ft_ipow(4, 5));
+	printf("%d ^ %d = %d\n", -4, 6, ft_ipow(-4, 6));
+	printf("%d ^ %d = %d\n", 16, 7, ft_ipow(16, 7));
+	printf("%d ^ %d = %d\n", 16, 8, ft_ipow(16, 8));
+	printf("%d ^ %d = %d\n", 25, 16, ft_ipow(25, 16));
+	printf("%d ^ %d = %d\n", -2, 3, ft_ipow(-2, 3));
+	printf("%d ^ %d = %d\n", -2, 11, ft_ipow(-2, 10));
+	printf("%d ^ %d = %d\n", 2, -10, ft_ipow(2, -10));
+
+	printf("\nTest ft_upow (unsigned int): \n");
+	res = ft_upow(n, pow);
+	printf("%u ^ %u = %u\n", n, pow, res);
+	printf("%u ^ %u = %u\n", 2, 0, ft_upow(2, 0));
+	printf("%u ^ %u = %u\n", 10, 4, ft_upow(10, 4));
+	printf("%u ^ %u = %u\n", 4, 4, ft_upow(4, 4));
+	printf("%u ^ %u = %u\n", 4, 3, ft_upow(4, 3));
+	printf("%u ^ %u = %u\n", 4, 5, ft_upow(4, 5));
+	printf("%u ^ %u = %u\n", -4, 6, ft_upow(-4, 6));
+	printf("%u ^ %u = %u\n", 16, 7, ft_upow(16, 7));
+	printf("%u ^ %u = %u\n", 16, 8, ft_upow(16, 8));
+	printf("%u ^ %u = %u\n", 25, 16, ft_upow(25, 16));
+	printf("%u ^ %u = %u\n", -2, 3, ft_upow(-2, 3));
+	printf("%u ^ %u = %u\n", -2, 11, ft_upow(-2, 10));
+	printf("%u ^ %u = %u\n", 2, -10, ft_upow(2, -10));
+	/*
+	printf("%u ^ %u = %u %d\n", 2, 0, ft_upow(2, 0), ft_upow(2, 0));
+	printf("%u ^ %u = %u %d\n", 10, 4, ft_upow(10, 4), ft_upow(10, 4));
+	printf("%u ^ %u = %u %d\n", 4, 4, ft_upow(4, 4), ft_upow(4, 4));
+	printf("%u ^ %u = %u %d\n", 4, 3, ft_upow(4, 3), ft_upow(4, 3));
+	printf("%u ^ %u = %u %d\n", 4, 5, ft_upow(4, 5), ft_upow(4, 5));
+	printf("%u ^ %u = %u %d\n", 16, 7, ft_upow(16, 7), ft_upow(16, 7));
+	printf("%u ^ %u = %u %d\n", 16, 8, ft_upow(16, 8), ft_upow(16, 8));
+	printf("%u ^ %u = %u %d\n", 25, 16, ft_upow(25, 16), ft_upow(25, 16));
+	printf("%u ^ %u = %u %d\n", -2, 3, ft_upow(-2, 3), ft_upow(-2, 3));
+	printf("%u ^ %u = %u %d\n", 2, -10, ft_upow(2, -10), ft_upow(2, -10));
+	*/
+
+
+	
 /*
  *		ft_cat
  */
@@ -134,6 +209,7 @@ int		main(int ac, char **av)
 	test_cat("-");
 
 	free(ptr);
+	free(ptr2);
 	return (0);
 }
 
@@ -373,6 +449,26 @@ static int			test_memcpy(char *s, size_t n)
 	}
 	printf("OK\n");
 	free(ptr);
+	free(tmp);
+	return (0);
+}
+
+static int			test_memmove(char *d, char *s, size_t n)
+{
+	char	*tmp;
+	size_t	i = 0;
+
+	tmp = malloc(n);
+	tmp = memcpy(tmp, s, n);
+	d = ft_memmove(d, s, n);
+	while (i < n)
+	{
+		printf("dst[%ld]: %d\n", i, d[i]);
+		if (d[i] != tmp[i])
+			return (printf("ERROR: dst[%ld]: %d != %d\n", i, s[i], tmp[i]));
+		++i;
+	}
+	printf("OK\n");
 	free(tmp);
 	return (0);
 }

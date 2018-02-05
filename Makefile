@@ -6,7 +6,7 @@
 #    By: lfabbro <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/01/04 15:18:12 by lfabbro           #+#    #+#              #
-#    Updated: 2018/01/23 16:48:57 by lfabbro          ###   ########.fr        #
+#    Updated: 2018/02/03 17:59:26 by lfabbro          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 # nasm -f macho64 libc.s -o libc.o
@@ -29,6 +29,8 @@ SRC_NAME	= ft_bzero.s \
 			  ft_memset.s \
 			  ft_memcpy.s \
 			  ft_strdup.s \
+			  ft_memmove.s \
+			  ft_pow.s \
 			  ft_cat.s
 
 TEST		= test_libfts
