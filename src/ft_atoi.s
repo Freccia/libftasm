@@ -6,7 +6,7 @@
 ;    By: lfabbro <lfabbro@student.42.fr>            +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2018/02/05 19:22:45 by lfabbro           #+#    #+#              ;
-;    Updated: 2018/02/05 20:12:00 by lfabbro          ###   ########.fr        ;
+;    Updated: 2018/02/06 12:42:57 by lfabbro          ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -16,9 +16,8 @@ section		.text
 _ft_atoi:
 	push	rbp				;
 	mov		rbp, rsp		;
-	xor		rax, rax		;
-	xor		rsi, rsi		;
-	xor		rdx, rdx		;
+	xor		rax, rax		; init
+	xor		rdx, rdx		; init
 	mov		ebx, 1			; sign
 	mov		ecx, 10			; base
 	dec		rdi				;
@@ -38,17 +37,11 @@ _ft_atoi:
 	cmp		byte [rdi], 13	; (*rdi == '\r')
 	je		.loop			;
 
-	cmp		byte [rdi], 45	; sign
-	je		.sign			;
-
 .number:
 	cmp		byte [rdi], 43	; (*rdi == '+')
 	je		.inc			;	++rdi
 	cmp		byte [rdi], 45	; (*rdi == '-')
-	je		.inc			;	++rdi
-
-;	mov		rax, rdi
-;	jmp		.end
+	je		.neg			;	++rdi
 
 .number_loop:
 	cmp		byte [rdi], 48	; (s[i] < '0')
@@ -56,24 +49,25 @@ _ft_atoi:
 	cmp		byte [rdi], 57	; (s[i] > '9')
 	jg		.end			;
 	mul		ecx				; n * 10
-	mov		esi, eax		;
-	mov		byte eax, [rdi]		; s[i] - '0'
+	push	rax				;
+	movzx	eax, byte [rdi]	; s[i]
 	sub		eax, 48			;
 	div		ecx				; 	% 10 (stored in edx)
-	mov		eax, esi		;
+	pop		rax
 	add		eax, edx		; (n*10) + (s[i] - '0') % 10
-	jmp		.end
 	inc		rdi				;
 	jmp		.number_loop	;
 
 .end:
-	;mul		ebx				; eax * sign
+	mul		ebx				; eax * sign
 	pop		rbp				;
 	ret						;
 
-.sign:
-	mov		ebx, 1			;
-	jmp		.number			;
-
 .inc:
+	inc		rdi				;
+	jmp		.number_loop	;
+
+.neg:
+	mov		ebx, -1			;
+	inc		rdi				;
 	jmp		.number_loop	;
