@@ -13,6 +13,9 @@
 #ifndef LIBFTS_H
 # define LIBFTS_H
 
+/*
+**	libfts
+*/
 void			ft_bzero(void *ptr, int n);
 char			*ft_strcat(char *restrict s1, const char *restrict s2);
 int				ft_isalpha(int c);
@@ -28,8 +31,9 @@ void			*ft_memset(void *b, int c, size_t len);
 void			*ft_memcpy(void *restrict dst, const void *restrict src, size_t n);
 char			*ft_strdup(const char *s1);
 void			ft_cat(int fd);
+
 /*
-**	bonus
+**	Bonus
 */
 void			*ft_memmove(void *dst, const void *src, size_t n);
 int				ft_ipow(int nb, int pow);
@@ -37,10 +41,5 @@ unsigned int	ft_upow(unsigned int nb, unsigned int pow);
 int				ft_isnbr(char *str);
 void			ft_swap(int *a, int *b);
 int				ft_atoi(char *str);
-
-
-/*
- * Bonus
-*/
 
 #endif

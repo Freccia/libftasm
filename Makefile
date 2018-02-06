@@ -66,7 +66,7 @@ ENDC		= \033[0m
 
 .PHONY:	all clean fclean re test_libfts
 
-all: $(NAME) test
+all: $(NAME) #test
 
 $(NAME): $(OBJ_ASM) 
 	ar rc $(NAME) $^

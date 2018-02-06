@@ -6,7 +6,7 @@
 ;    By: lfabbro <lfabbro@student.42.fr>            +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2018/02/05 18:38:55 by lfabbro           #+#    #+#              ;
-;    Updated: 2018/02/05 19:51:10 by lfabbro          ###   ########.fr        ;
+;    Updated: 2018/02/06 14:53:40 by lfabbro          ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -25,24 +25,27 @@ _ft_isnbr:
 	je		.end			;
 	cmp		byte [rdi], 32	; (*rdi == ' ')
 	je		.loop			;
-	cmp		byte [rdi], 10	; (*rdi == '\n')
-	je		.loop			;
 	cmp		byte [rdi], 9	; (*rdi == '\t')
 	je		.loop			;
+	cmp		byte [rdi], 10	; (*rdi == '\n')
+	je		.loop			;
 	cmp		byte [rdi], 11	; (*rdi == '\v')
+	je		.loop			;
+	cmp		byte [rdi], 12	; (*rdi == '\f')
 	je		.loop			;
 	cmp		byte [rdi], 13	; (*rdi == '\r')
 	je		.loop			;
 
-	cmp		byte [rdi], 43		; (*rdi == '+')
+
+	cmp		byte [rdi], 43	; (*rdi == '+')
 	je		.inc			;	++rdi
-	cmp		byte [rdi], 45		; (*rdi == '-')
+	cmp		byte [rdi], 45	; (*rdi == '-')
 	je		.inc			;	++rdi
 
 .isn:
-	cmp		byte [rdi], 48		; (*rdi < '0')
+	cmp		byte [rdi], 48	; (*rdi < '0')
 	jl		.end			;	false
-	cmp		byte [rdi], 57		; (*rdi > '9')
+	cmp		byte [rdi], 57	; (*rdi > '9')
 	jg		.end			;	false
 	mov		rax, 1			; true
 

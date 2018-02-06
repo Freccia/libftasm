@@ -179,7 +179,7 @@ int		main(int ac, char **av)
 	printf("%u ^ %u = %u\n", -4, 6, ft_upow(-4, 6));
 	printf("%u ^ %u = %u\n", 16, 7, ft_upow(16, 7));
 	printf("%u ^ %u = %u\n", 16, 8, ft_upow(16, 8));
-	printf("%u ^ %u = %u\n", 25, 16, ft_upow(25, 16));
+	//printf("%u ^ %u = %u\n", 25, 16, ft_upow(25, 16));
 	printf("%u ^ %u = %u\n", -2, 3, ft_upow(-2, 3));
 	printf("%u ^ %u = %u\n", -2, 11, ft_upow(-2, 10));
 	printf("%u ^ %u = %u\n", 2, -10, ft_upow(2, -10));
