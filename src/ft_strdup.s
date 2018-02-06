@@ -6,7 +6,7 @@
 ;    By: lfabbro <lfabbro@student.42.fr>            +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2018/02/02 12:52:43 by lfabbro           #+#    #+#              ;
-;    Updated: 2018/02/02 15:58:05 by lfabbro          ###   ########.fr        ;
+;    Updated: 2018/02/06 14:33:21 by lfabbro          ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -16,6 +16,8 @@ global		_ft_strdup
 section		.text
 
 _ft_strdup:
+	push		rbp			;
+	mov			rbp, rsp	;
 	cmp			rdi, 0		; str == NULL
 	je			.error		; return -> NULL
 
@@ -42,4 +44,5 @@ _ft_strdup:
 	mov			rax, 0		; return NULL
 
 .end:
-	ret
+	pop			rbp			;
+	ret						;

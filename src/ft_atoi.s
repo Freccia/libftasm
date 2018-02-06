@@ -6,7 +6,7 @@
 ;    By: lfabbro <lfabbro@student.42.fr>            +#+  +:+       +#+         ;
 ;                                                 +#+#+#+#+#+   +#+            ;
 ;    Created: 2018/02/05 19:22:45 by lfabbro           #+#    #+#              ;
-;    Updated: 2018/02/06 12:42:57 by lfabbro          ###   ########.fr        ;
+;    Updated: 2018/02/06 14:50:46 by lfabbro          ###   ########.fr        ;
 ;                                                                              ;
 ; **************************************************************************** ;
 
@@ -28,11 +28,13 @@ _ft_atoi:
 	je		.end			;
 	cmp		byte [rdi], 32	; (*rdi == ' ')
 	je		.loop			;
-	cmp		byte [rdi], 10	; (*rdi == '\n')
-	je		.loop			;
 	cmp		byte [rdi], 9	; (*rdi == '\t')
 	je		.loop			;
+	cmp		byte [rdi], 10	; (*rdi == '\n')
+	je		.loop			;
 	cmp		byte [rdi], 11	; (*rdi == '\v')
+	je		.loop			;
+	cmp		byte [rdi], 12	; (*rdi == '\f')
 	je		.loop			;
 	cmp		byte [rdi], 13	; (*rdi == '\r')
 	je		.loop			;

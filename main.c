@@ -238,7 +238,9 @@ int		main(int ac, char **av)
 /*
  *		ft_atoi
  */
-	printf("\nTest ft_atoi:\n");
+	printf("\nTest ft_atoi: %d %d %d %d \n", '\t', '\f', '\r', '\v');
+	strcpy(str, "        \n\t\v\f\r123");
+	printf("'%s': %d\n", str, ft_atoi(str));
 	strcpy(str, "   0010");
 	printf("'%s': %d\n", str, ft_atoi(str));
 	strcpy(str, "   -9099");
